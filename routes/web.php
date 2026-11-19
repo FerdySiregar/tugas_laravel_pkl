@@ -2,10 +2,17 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KatalogController;
+use App\Http\Controllers\ProdukController;
 use Illuminate\Support\Facades\Route;
 
-// Halaman utama langsung diarahkan ke halaman login
+// Halaman utama: cek status login & role dulu sebelum mengarahkan
 Route::get('/', function () {
+    if (auth()->check()) {
+        return auth()->user()->role === 'pemilik'
+            ? redirect('/dashboard-pemilik')
+            : redirect('/katalog');
+    }
+
     return redirect('/login');
 });
 
@@ -13,16 +20,19 @@ Route::get('/sapa', function () {
     return 'Halo, kelompok 2!';
 });
 
-// Rute Login & Logout
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login')->middleware('guest');
-Route::post('/login', [AuthController::class, 'login'])->middleware('guest');
+// Rute Login & Logout (middleware 'guest' dihapus agar tidak looping)
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
 // Halaman Khusus Pemilik
 Route::middleware(['auth', 'role:pemilik'])->group(function () {
     Route::get('/dashboard-pemilik', function () {
-        return view('pemilik.dashboard'); // Bisa sementara diganti: return "Halo Pemilik!";
+        return view('pemilik.dashboard');
     })->name('pemilik.dashboard');
+
+    // Rute Kelola Produk (Tambah, Edit, Hapus) khusus Pemilik
+    Route::resource('produk', ProdukController::class)->except(['show']);
 });
 
 // Halaman Katalog & Detail Produk (Bisa diakses oleh Kasir maupun Pemilik setelah login)
