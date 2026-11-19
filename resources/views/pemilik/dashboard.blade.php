@@ -8,6 +8,10 @@
         <p style="margin-bottom: 20px;">Selamat datang, <strong>{{ auth()->user()->name }}</strong>! Anda login dengan hak akses penuh sebagai <strong>Pemilik</strong>.</p>
 
         <div style="display: flex; gap: 15px; margin-top: 20px;">
+            <a href="{{ route('produk.index') }}" style="padding: 12px 20px; background-color: #16a34a; color: white; text-decoration: none; border-radius: 6px;">
+                Kelola Produk
+            </a>
+
             <a href="{{ route('katalog.index') }}" style="padding: 12px 20px; background-color: #2563eb; color: white; text-decoration: none; border-radius: 6px;">
                 Lihat Katalog Produk
             </a>
