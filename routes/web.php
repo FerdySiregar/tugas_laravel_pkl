@@ -10,7 +10,7 @@ Route::get('/', function () {
 });
 
 Route::get('/sapa', function () {
-    return 'Halo, kelompok 1!';
+    return 'Halo, kelompok 2!';
 });
 
 // Rute Login & Logout
