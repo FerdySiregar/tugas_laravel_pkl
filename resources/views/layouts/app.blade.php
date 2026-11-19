@@ -11,9 +11,11 @@
         <div>
             <strong>Kasir Ende</strong>
             @auth
+                | <a href="{{ route('transaksi.index') }}">Transaksi Kasir</a>
+                | <a href="{{ route('katalog.index') }}">Katalog</a>
                 @if(auth()->user()->role === 'pemilik')
                     | <a href="/dashboard-pemilik">Dashboard Pemilik</a>
-                    | <a href="/katalog">Katalog</a>
+                    | <a href="{{ route('produk.index') }}">Kelola Produk</a>
                 @endif
             @endauth
         </div>
